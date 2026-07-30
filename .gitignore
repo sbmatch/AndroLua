@@ -2,3 +2,4 @@ libs/
 obj/
 .gradle/
 build/
+mapping.txt
