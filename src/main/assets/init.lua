@@ -9,6 +9,8 @@ import 'android.view.*'
 import 'android.util.*'
 import 'android.provider.*'
 import 'android.telephony.*'
+import 'android.content.*'
+import 'com.sbmatch.androlua.*'
 
 context = activity:getApplicationContext()
 
