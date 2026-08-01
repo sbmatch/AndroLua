@@ -6,7 +6,9 @@ import com.kongzue.baseframework.util.JumpParameter;
 import android.widget.TextView;
 import android.content.Intent;
 import android.graphics.Color;
+import com.tencent.mmkv.MMKV;
 import com.sbmatch.androlua.R;
+
 
 public class DebugCrashActivity extends BaseActivity {
 
@@ -24,18 +26,24 @@ public class DebugCrashActivity extends BaseActivity {
     public void initViews() {
         logTextView = (TextView) findViewById(R.id.logText);
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
     }
 
     @Override
     // 请在此编写初始化操作，例如读取数据等，以及对 UI 组件进行赋值
     public void initDatas(JumpParameter parameter) {
+        
         Intent intent = getIntent();
         if (intent != null) {
-            String crashLogPath = intent.getStringExtra("crash_log_path");
-            String errorStackTrace = intent.getStringExtra("error_stacktrace");
+            MMKV xCrashkv = MMKV.mmkvWithID("xcrash");
+            
+            String title = intent.getStringExtra("title");
+            if (title != null) toolbar.setTitle(title);
+            String logKey = intent.getStringExtra("logKey");
+            if (logKey == null) return;
+            String errorStackTrace = xCrashkv.decodeString(logKey);
             logTextView.setText(errorStackTrace);
+            xCrashkv.encode(logKey, (String) null);
         }
     }
 

@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:title="@string/debug_crash"
-                app:navigationIcon="?attr/homeAsUpIndicator" 
+                app:navigationIcon="?attr/homeAsUpIndicator"
                 app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -58,13 +58,17 @@
                 android:id="@+id/logText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="6dp"
                 android:scrollbars="vertical"
-                android:textColor="#333333"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textColorHint="?android:attr/textColorSecondary"
                 android:hint="暂无崩溃日志"
                 android:focusable="true"
                 android:longClickable="true"
-                android:nestedScrollingEnabled="true" />
+                android:nestedScrollingEnabled="true"
+                android:textIsSelectable="true"
+                android:linksClickable="false"
+                android:focusableInTouchMode="true" />
 
         </LinearLayout>
 

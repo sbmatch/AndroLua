@@ -6,6 +6,7 @@
 -keep class org.keplerproject.** { *; }
 -keep class org.apache.commons.io.** { *; }
 -keep class com.github.sisong.** { *; }
+-keep class com.tencent.mmkv.MMKV  { *; }
 
 -keep class android.support.annotation.Keep
 -keep public class com.google.android.vending.licensing.ILicensingService
