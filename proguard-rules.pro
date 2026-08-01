@@ -4,6 +4,7 @@
 
 # 保留 Lua 相关类
 -keep class org.keplerproject.** { *; }
+-keep class org.apache.commons.io.** { *; }
 
 -printmapping mapping.txt
 
