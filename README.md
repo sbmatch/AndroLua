@@ -26,11 +26,7 @@ Assuming that `$SDK` points to your SDK and `$NDK` points to your NDK installati
 
     git clone https://github.com/sbmatch/AndroLua.git
     cd AndroLua
-    ndk-build 
-
-This will build the native library, consisting of Lua and LuaJava. Then import the project into Android Studio, or run the following
-
-    ./gradlew assembleRelease
+    ./gradlew assembleRelease or ./gradlew assembleDebug
 
 Usage
 -----
