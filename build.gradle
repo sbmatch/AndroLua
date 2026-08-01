@@ -2,6 +2,7 @@ buildscript {
     repositories {
     	google()
     	mavenCentral()
+    	maven { url 'https://jitpack.io' }
     }
     dependencies { classpath 'com.android.tools.build:gradle:8.7.0' }
 }
@@ -10,6 +11,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -18,6 +20,8 @@ apply plugin: 'com.android.application'
 android {
     namespace 'com.sbmatch.androlua'
     compileSdk 35
+    ndkPath "/data/data/com.termux/files/usr/android-ndk-r29"
+    ndkVersion "29.0.14206865"
     defaultConfig {
         applicationId "com.sbmatch.androlua"
         minSdk 28
@@ -27,10 +31,17 @@ android {
         
         externalNativeBuild {
             ndkBuild {
-               //cFlags ""
-               }
+               abiFilters 'arm64-v8a', 'x86_64'
+               arguments "NDK_LIBS_OUT=src/main/jniLibs"
+            }
         }
     
+    }
+
+    externalNativeBuild {
+        ndkBuild {
+            path = file('jni/Android.mk')
+        }
     }
 
     buildTypes {
@@ -52,11 +63,7 @@ android {
     }
 
     sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
+        main{
             jniLibs.srcDirs = ['libs']
         }
     }
@@ -67,12 +74,25 @@ android {
         }
     }
     
+    applicationVariants.all { variant ->
+        // 遍历所有的变体
+        variant.outputs.all {
+            // 获取应用的版本名
+            def versionName = variant.versionName
+            def versionCode = getDefaultConfig().versionCode
+            
+            outputFileName = "androlua_v${versionName}.apk"
+        }
+    }
+    
     dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
     	implementation 'androidx.appcompat:appcompat:1.6.1'
     	implementation 'com.google.android.material:material:1.9.0'
     	implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
     	implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     	
+    	implementation 'com.github.kongzue:BaseFramework:latest.release'
     	implementation 'commons-io:commons-io:2.22.0'
     }
 }
