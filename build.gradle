@@ -20,8 +20,7 @@ apply plugin: 'com.android.application'
 android {
     namespace 'com.sbmatch.androlua'
     compileSdk 35
-    ndkPath "/data/data/com.termux/files/usr/android-ndk-r29"
-    ndkVersion "29.0.14206865"
+    
     defaultConfig {
         applicationId "com.sbmatch.androlua"
         minSdk 28
@@ -37,6 +36,9 @@ android {
         }
     
     }
+
+    ndkPath System.getenv('ANDROID_NDK_HOME')
+    ndkVersion "29.0.14206865"
 
     externalNativeBuild {
         ndkBuild {
