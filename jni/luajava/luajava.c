@@ -42,6 +42,7 @@
 #include "lauxlib.h"
 
 
+
 /* Constant that is used to index the JNI Environment */
 #define LUAJAVAJNIENVTAG      "__JNIEnv"
 /* Defines wheter the metatable is of a java Object */
@@ -239,7 +240,6 @@ static jclass    java_lang_class      = NULL;
 
 
 /***************************************************************************
-/*
 * $FC pushJavaObject
 * 
 * $ED Description
