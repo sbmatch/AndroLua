@@ -82,7 +82,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
         try {
             L.pushJavaObject(this);
             L.setGlobal("activity");
-
+            
             JavaFunction print = new JavaFunction(L) {
                 @Override
                 public int execute() throws LuaException {
@@ -147,6 +147,8 @@ public class Main extends AppCompatActivity implements OnClickListener {
         } catch (Exception e) {
             status.setText("Cannot override print");
         }
+        
+        //onClick(status);
     }
 
     @Override
@@ -168,7 +170,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
             try {
                 server = new ServerSocket(LISTEN_PORT);
                 server.setReuseAddress(true);
-                show("Server started on port " + LISTEN_PORT);
+                
                 while (!stopped) {
                     Socket client = server.accept();
                     BufferedReader in = new BufferedReader(
@@ -264,10 +266,10 @@ public class Main extends AppCompatActivity implements OnClickListener {
 
     public void onClick(View view) {
         String src = source.getText().toString();
-        status.setText("");
+        //status.setText("");
         try {
             String res = evalLua(src);
-            status.append(res);
+            status.setText(res);
             //status.append("Finished succesfully");
         } catch (LuaException e) {
             status.setText(e.getMessage());

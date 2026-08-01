@@ -1,6 +1,14 @@
 require 'import'
 
 import 'org.apache.commons.io.*'
+import 'android.widget.*'
+import 'android.os.*'
+import 'android.app.*'
+import 'android.net.*'
+import 'android.view.*'
+import 'android.util.*'
+import 'android.provider.*'
+import 'android.telephony.*'
 
 context = activity:getApplicationContext()
 
