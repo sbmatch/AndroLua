@@ -3,3 +3,5 @@ obj/
 .gradle/
 build/
 mapping.txt
+xcrash_lib/.cxx
+xcrash_lib/build/
