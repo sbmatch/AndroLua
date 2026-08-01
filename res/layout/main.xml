@@ -45,6 +45,8 @@
         android:layout_height="730dp"
         android:fillViewport="true"
         android:padding="10dp"
+        android:descendantFocusability="beforeDescendants"
+        
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -56,17 +58,19 @@
                 android:id="@+id/source"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="200dp"
-                android:maxHeight="500dp"
+                android:minHeight="180dp"
+                android:maxHeight="400dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="top|left"
                 android:inputType="textMultiLine"
-                android:textColor="#000000"
+                
                 android:background="@drawable/rounded_view"
                 android:textSize="14sp"
                 android:padding="10dp"
                 android:scrollbars="vertical"
-                android:text="这里输入代码..." />
+                android:nestedScrollingEnabled="true"
+                android:overScrollMode="always"
+                android:hint="这里输入代码..." />
 
             <Button
                 android:id="@+id/executeBtn"
@@ -79,15 +83,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-                
+
             <TextView
                 android:id="@+id/statusText"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
+                android:minHeight="180dp"
+                android:maxHeight="250dp"
                 android:padding="10dp"
                 android:scrollbars="vertical"
                 android:textColor="#333333"
-                android:text="Status Area"
+                android:hint="输出"
+                android:focusable="true"
+                android:longClickable="true"
+                android:nestedScrollingEnabled="true"
                 android:background="@drawable/rounded_view" />
 
         </LinearLayout>

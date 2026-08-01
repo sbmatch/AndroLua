@@ -64,12 +64,13 @@ public class Main extends AppCompatActivity implements OnClickListener {
         execute.setOnClickListener(this);
 
         source = (EditText) findViewById(R.id.source);
-        //source.setOnLongClickListener(this);
-        source.setText("require 'import'\nprint(Math:sin(2.3))\n");
+        // source.setOnLongClickListener(this);
+        source.setText("require 'init'\nrequire 'greet'\ngreet.hello('AndroLua')\n");
 
         status = (TextView) findViewById(R.id.statusText);
-        status.setMovementMethod(ScrollingMovementMethod.getInstance());
-
+        status.setMovementMethod(new ScrollingMovementMethod());
+        status.setTextIsSelectable(true);
+        
         L = LuaStateFactory.newLuaState();
         L.openLibs();
 
@@ -113,10 +114,10 @@ public class Main extends AppCompatActivity implements OnClickListener {
                 @Override
                 public int execute() throws LuaException {
                     String name = L.toString(-1);
-
+                    String fileName = name.replace('.', '/');
                     AssetManager am = getAssets();
                     try {
-                        InputStream is = am.open(name + ".lua");
+                        InputStream is = am.open(fileName + ".lua");
                         byte[] bytes = readAll(is);
                         L.LloadBuffer(bytes, name);
                         return 1;
@@ -267,7 +268,7 @@ public class Main extends AppCompatActivity implements OnClickListener {
         try {
             String res = evalLua(src);
             status.append(res);
-            status.append("Finished succesfully");
+            //status.append("Finished succesfully");
         } catch (LuaException e) {
             status.setText(e.getMessage());
         }
@@ -287,5 +288,4 @@ public class Main extends AppCompatActivity implements OnClickListener {
         return "Unknown error " + error;
     }
 
-    
 }
