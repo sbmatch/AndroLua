@@ -1005,13 +1005,13 @@ int javaNew( lua_State * L )
    method = ( *javaEnv )->GetStaticMethodID( javaEnv , luajava_api_class , "javaNew" , 
                                              "(ILjava/lang/Class;)I" );
 
-   if ( clazz == NULL || method == NULL )
+   if ( luajava_api_class == NULL || method == NULL )
    {
       lua_pushstring( L , "Invalid method org.keplerproject.luajava.LuaJavaAPI.javaNew." );
       lua_error( L );
    }
 
-   ret = ( *javaEnv )->CallStaticIntMethod( javaEnv , clazz , method , (jint)stateIndex , classInstance );
+   ret = ( *javaEnv )->CallStaticIntMethod( javaEnv , luajava_api_class , method , (jint)stateIndex , classInstance );
 
    exp = ( *javaEnv )->ExceptionOccurred( javaEnv );
 
