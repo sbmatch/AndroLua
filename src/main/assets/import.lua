@@ -2,7 +2,6 @@ local packages = {}
 local append = table.insert
 local new = luajava.new
 
-
 -- SciTE requires this, if you want to see stdout immediately...
 
 io.stdout:setvbuf 'no'
@@ -20,7 +19,7 @@ local function call (t,...)
         stat,obj = pcall(new,t,...)
         if not stat then
             print(debug.traceback())
-            os.exit(1)
+            error(obj)
         end
     end
 	getmetatable(obj).__tostring = new_tostring
@@ -45,38 +44,27 @@ local function massage_classname (classname)
 end
 
 local globalMT = {
-    __index = function(T, classname)
-        classname = massage_classname(classname)
-        for i, p in ipairs(packages) do
-            local class = import_class(classname, p .. classname)
-            if class then return class end
-        end
-        error("import cannot find " .. classname)
-    end
+	__index = function(T,classname)
+            classname = massage_classname(classname)
+			for i,p in ipairs(packages) do
+                local class = import_class(classname,p..classname)
+                if class then return class end
+			end
+            error("import cannot find "..classname)
+	end
 }
 setmetatable(_G, globalMT)
 
-function import(package)
-    if not package or package == "" then
-        return nil
-    end
-    
+function import (package)
     local i = package:find('%.%*$')
-    if i then
-        append(packages, package:sub(1, i))
-        return nil
-    end
-    
-    local classname = package:match('([%w_]+)$')
-    if classname then
-        local ok, result = pcall(import_class, classname, package)
-        if not ok or not result then
-            error("cannot find " .. package)
+    if i then -- a wildcard; put into the package list, including the final '.'
+        append(packages,package:sub(1,i))
+    else
+        local classname = package:match('([%w_]+)$')
+        if not import_class(classname,package) then
+            error("cannot find "..package)
         end
-        return result
     end
-    
-    error("cannot find " .. package)
 end
 
 append(packages,'')
@@ -143,5 +131,6 @@ end
 
 import 'java.lang.*'
 import 'java.util.*'
+
 import 'java.io.*'
 import 'java.nio.*'
