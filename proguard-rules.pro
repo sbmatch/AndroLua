@@ -1,12 +1,36 @@
+-dontpreverify
+
 -keepclasseswithmembernames class * {
     native <methods>;
 }
 
-
--keep class org.keplerproject.** { *; }
--keep class org.apache.commons.io.** { *; }
--keep class com.github.sisong.** { *; }
--keep class com.tencent.mmkv.MMKV  { *; }
+-keep class org.keplerproject.luajava.** {
+    *;
+}
+-keep class org.apache.commons.io.** {
+    public <init>(...);
+    public *;
+}
+-keep class com.github.sisong.** { 
+    public <init>(...);
+    public *; 
+}
+-keep class com.tencent.mmkv.MMKV  {
+    public <init>(...);
+    public *; 
+}
+-keep class xcrash.XCrash { 
+    public <init>(...);
+    public *; 
+}
+-keep class xcrash.TombstoneManager {
+    public <init>(...);
+    public *;
+}
+-keep class xcrash.TombstoneParser { 
+    public <init>(...);
+    public *; 
+}
 
 -keep class android.support.annotation.Keep
 -keep public class com.google.android.vending.licensing.ILicensingService
