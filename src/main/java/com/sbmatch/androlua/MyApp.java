@@ -3,14 +3,10 @@ package com.sbmatch.androlua;
 import com.kongzue.baseframework.BaseApp;
 import com.kongzue.baseframework.interfaces.OnBugReportListener;
 
-import android.content.DialogInterface;
-import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.color.DynamicColors;
 import com.sbmatch.helper.utils.MagicHelper;
 import java.io.File;
 import android.content.Intent;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
@@ -24,6 +20,7 @@ import java.nio.channels.FileChannel;
 import java.nio.ByteBuffer;
 import java.io.FileInputStream;
 
+
 public class MyApp extends BaseApp<MyApp> {
     @Override
     public void init() {
@@ -36,21 +33,14 @@ public class MyApp extends BaseApp<MyApp> {
         ICrashCallback callback = new ICrashCallback() {
             @Override
             public void onCrash(String logPath, String emergency) {
-                try {
-                    xCrashkv.encode("nativeCrashLog", readFileString(logPath));
-                } catch (IOException e) {
-             
-                }
-                
-                if (emergency != null) {
-                    error(emergency);
-                }
+                xCrashkv.encode("logPath", logPath);
+                xCrashkv.encode("emergency", emergency);
             }
         };
 
-        String nativeCrashLog = xCrashkv.decodeString("nativeCrashLog", null);
-        if (nativeCrashLog != null) {
-            openCrashActivity("nativeCrashLog", "上次崩溃日志");
+        String nativeCrashPath = xCrashkv.decodeString("logPath", null);
+        if (nativeCrashPath != null) {
+            openCrashActivity("nativeCrashLog", nativeCrashPath, xCrashkv.decodeString("emergency", null), "上次崩溃日志");
         }
 
         XCrash.init(this, new XCrash.InitParameters()
@@ -73,26 +63,21 @@ public class MyApp extends BaseApp<MyApp> {
             public boolean onCrash(Exception e, final File crashLogFile) {
                 // TODO: 请在这里处理异常信息
                 // return true时，会在执行完上述代码后关闭 App，但 return false，则会拦截此错误，App 不会闪退，继续运行
-                xCrashkv.encode("javaCrashLog", getStackTraceString(e));
-                openCrashActivity("javaCrashLog", null);
+                xCrashkv.encode("javaCrashLog", android.util.Log.getStackTraceString(e));
+                openCrashActivity("javaCrashLog", null, null, null);
                 return false;
             }
         });
     }
 
-    void openCrashActivity(String logKey, String title) {
+    void openCrashActivity(String logKey, String logPath, String emergency, String title) {
         Intent intent = new Intent(me, com.sbmatch.androlua.DebugCrashActivity.class);
-        if (title != null) intent.putExtra("title", title);
+        intent.putExtra("title", title);
         intent.putExtra("logKey", logKey);
+        intent.putExtra("logPath", logPath);
+        intent.putExtra("emergency", emergency);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    private String getStackTraceString(Exception e) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        return sw.toString();
     }
 
     String readFileString(String path) throws IOException {
